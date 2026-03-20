@@ -35,14 +35,6 @@ public class User {
             orphanRemoval = true,
             fetch     = FetchType.LAZY
     )
-    private Wardrobe wardrobe;
-
-    @OneToOne(
-            mappedBy = "user",
-            cascade   = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch     = FetchType.LAZY
-    )
     private Body body;
 
     @Builder

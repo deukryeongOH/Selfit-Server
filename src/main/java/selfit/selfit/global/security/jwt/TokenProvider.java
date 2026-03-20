@@ -100,7 +100,7 @@ public class TokenProvider {
         Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(claims.getSubject());
 
-        List<?> roles = (List<?>)claims.get("auth");
+        List<?> roles = (List<?>)claims.get("roles");
         List<SimpleGrantedAuthority> auths = roles.stream().map(Object::toString)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());

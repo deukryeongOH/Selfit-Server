@@ -49,11 +49,6 @@ public class UserServiceImpl implements UserService {
                 .user(user)
                 .build();
 
-        Wardrobe wardrobe = Wardrobe.builder()
-                .user(user)
-                .build();
-
-        user.setWardrobe(wardrobe);
         user.setBody(body);
 
         return userRepository.save(user);

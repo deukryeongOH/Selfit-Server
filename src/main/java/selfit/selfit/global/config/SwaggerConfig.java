@@ -1,22 +1,26 @@
 package selfit.selfit.global.config;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@OpenAPIDefinition(
+        info = @Info(title = "My API", version = "v1"),
+        security = @SecurityRequirement(name = "BearerAuth")
+)
+@SecurityScheme(
+        name = "BearerAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT"
+)
 public class SwaggerConfig {
-    @Bean
-    public OpenAPI getOpenApi() {
-        return new OpenAPI().components(new Components())
-                .info(getInfo());
-    }
-    private Info getInfo() {
-        return new Info()
-                .title("Selfit API")
-                .description("Selfit REST API DOC")
-                .version("1.0.0");
-    }
 }
+

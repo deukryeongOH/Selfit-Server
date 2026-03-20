@@ -2,6 +2,7 @@ package selfit.selfit.domain.wardrobe.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import selfit.selfit.domain.clothes.dto.ClothesType;
 import selfit.selfit.domain.clothes.entity.Clothes;
 import selfit.selfit.domain.user.entity.User;
 
@@ -25,19 +26,22 @@ public class Wardrobe {
     @Column(name = "update_date", nullable = false)
     private Date update_date;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @ElementCollection
-    @CollectionTable(name = "clothes_photos",
-            joinColumns = @JoinColumn(name = "wardrobe_id"))
-    @Column(name = "clothes_path", nullable = false)
-    private List<String> clothesPhotos = new ArrayList<>();
+    @Column(name = "path", nullable = false)
+    private String path;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private ClothesType type;
 
     @Builder
-    public Wardrobe(User user) {
+    public Wardrobe(User user, String path, ClothesType type) {
         this.user = user;
+        this.path = path;
+        this.type = type;
         this.create_date = new Date();
         this.update_date = new Date();
     }

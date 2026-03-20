@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import selfit.selfit.domain.clothes.dto.ClothesType;
 import selfit.selfit.domain.clothes.entity.Clothes;
 import selfit.selfit.domain.user.entity.User;
 import selfit.selfit.domain.wardrobe.dto.WardrobeDto;
@@ -32,69 +33,52 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WardrobeController {
 
-    @Autowired private final WardrobeService wardrobeService;
+    private final WardrobeService wardrobeService;
 
-    @Operation(summary = "소장 의류 등록", description = "사용자가 소유한 옷의 이미지를 등록하고, 등록한 옷들의 경로를 반환합니다.",
+    @Operation(summary = "소장 의류 등록", description = "사용자가 소유한 옷의 이미지를 등록하고, 등록한 옷의 경로를 반환합니다. type = TOP, BOTTOM",
             responses = {
                     @ApiResponse(responseCode = "200", description = "등록 성공"),
                     @ApiResponse(responseCode = "400", description = "잘못된 요청"),
                     @ApiResponse(responseCode = "401", description = "인증 필요")
             }
     )
-    @PostMapping("/photos")
-    public ApiResult<List<String>> registerClothesFromWardrobe(@RequestParam("file") List<MultipartFile> files,
-                                                              @AuthenticationPrincipal CustomUserDetails customUserDetails){
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResult<String> registerClothesFromWardrobe(@RequestParam("type") ClothesType type,
+                                                         @RequestParam("file") MultipartFile file,
+                                                         @AuthenticationPrincipal CustomUserDetails customUserDetails){
         Long userId = customUserDetails.getId();
-        List<String> paths = wardrobeService.saveClothes(userId, files);
-
-        return ApiResult.ok("소장 의류 등록 완료", paths);
+        String path = wardrobeService.saveClothes(userId, type, file);
+        return ApiResult.ok("담은 옷 등록", path);
     }
 
-    @Operation(summary = "소장 의류 삭제", description = "사용자가 소장한 의류 중 index 위치의 사진을 삭제하고, 남은 사진 경로 리스트를 반환합니다.",
+    @Operation(summary = "소장 의류 삭제", description = "주어진 의류를 path를 통해 삭제합니다.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "삭제 성공"),
                     @ApiResponse(responseCode = "400", description = "잘못된 요청"),
                     @ApiResponse(responseCode = "401", description = "인증 필요")
             }
     )
-    @DeleteMapping("/photos/{index}")
-    public ApiResult<List<String>> deleteClothesFromWardrobe(@Parameter(description = "삭제할 의류의 순서(0부터 시작)", example = "2")
-                                                                 @PathVariable int index,
-                                                                 @AuthenticationPrincipal CustomUserDetails customUserDetails){
-        Long userId = customUserDetails.getId();
-        List<String> remain = wardrobeService.deleteClothes(userId, index);
+    @DeleteMapping("/delete")
+    public ApiResult<String> deleteClothesFromWardrobe(@RequestParam String imageURL){
+        wardrobeService.deleteClothes(imageURL);
 
-        return ApiResult.ok("소장 의류 삭제 완료", remain);
+        return ApiResult.ok("소장 의류 삭제 완료");
     }
 
-    @Operation(summary = "소장 의류 제공", description = "사용자가 소장한 의류 중 index 위치의 사진을 제공하고, 사진의 리소스를 반환합니다.",
+    @Operation(summary = "소장 의류 제공", description = "사용자가 가진 소장의류를 전부 제공합니다.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "제공 성공"),
                     @ApiResponse(responseCode = "400", description = "잘못된 요청"),
                     @ApiResponse(responseCode = "401", description = "인증 필요")
             }
     )
-    @GetMapping("/photos/{index}")
-    public ResponseEntity<Resource> provideClothesFromWardrobe(@Parameter(description = "제공할 의류의 순서(0부터 시작)", example = "2")
-                                                                   @PathVariable int index,
-                                                               @AuthenticationPrincipal CustomUserDetails customUserDetails) throws IOException {
-        Long userId = customUserDetails.getId();
-        Resource resource = wardrobeService.provideClothesResource(userId, index);
-
-        String contentType;
-        try {
-            contentType = Files.probeContentType(Path.of(resource.getURI()));
-            if (contentType == null) {
-                contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
-            }
-        } catch (Exception e) {
-            contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
-        }
+    @GetMapping("/provide")
+    public ResponseEntity<List<WardrobeDto>> provideClothesFromWardrobe(@AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
+        Long userId = userDetails.getId();
+        List<WardrobeDto> dtoList = wardrobeService.getClothes(userId);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=photo")
-                .contentType(MediaType.parseMediaType(contentType))
-                .body(resource);
+                .body(dtoList);
     }
 
 }

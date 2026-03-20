@@ -15,10 +15,12 @@ public class FittedImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "fitted_url", columnDefinition = "TEXT")
     private String fitted_url;
 
-    private Date create_date;
-    private Date update_date;
+    private Date createDate;
+    private Date updateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -28,7 +30,7 @@ public class FittedImage {
     public FittedImage(String fitted_url, User user) {
         this.fitted_url = fitted_url;
         this.user = user;
-        this.create_date = new Date();
-        this.update_date = new Date();
+        this.createDate = new Date();
+        this.updateDate = new Date();
     }
 }
