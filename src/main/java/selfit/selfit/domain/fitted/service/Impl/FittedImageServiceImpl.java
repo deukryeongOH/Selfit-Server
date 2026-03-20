@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import selfit.selfit.domain.body.entity.Body;
 import selfit.selfit.domain.body.repository.BodyRepository;
+import selfit.selfit.domain.fitted.dto.FittedImageDto;
 import selfit.selfit.domain.fitted.entity.FittedImage;
 import selfit.selfit.domain.fitted.repository.FittedImageRepository;
 import selfit.selfit.domain.fitted.service.FittedImageService;
@@ -16,6 +17,10 @@ import selfit.selfit.domain.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional

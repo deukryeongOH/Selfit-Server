@@ -17,9 +17,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")               // API 전용 경로
                 .allowedOrigins(frontendUrl, "http://localhost:8080")  // 프론트 URL & Swagger UI
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")                // 모든 헤더 허용
-                .allowCredentials(true)             // 쿠키, Authorization 헤더 허용
-                .maxAge(3600);                      // pre-flight 캐시 1시간
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 
 }

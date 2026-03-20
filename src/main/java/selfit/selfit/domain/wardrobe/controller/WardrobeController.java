@@ -1,31 +1,20 @@
 package selfit.selfit.domain.wardrobe.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import selfit.selfit.domain.clothes.dto.ClothesType;
-import selfit.selfit.domain.clothes.entity.Clothes;
-import selfit.selfit.domain.user.entity.User;
 import selfit.selfit.domain.wardrobe.dto.WardrobeDto;
-import selfit.selfit.domain.wardrobe.entity.Wardrobe;
 import selfit.selfit.domain.wardrobe.service.WardrobeService;
 import selfit.selfit.global.dto.ApiResult;
 import selfit.selfit.global.security.springsecurity.CustomUserDetails;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 @RestController

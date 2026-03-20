@@ -4,11 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import selfit.selfit.domain.clothes.dto.ClothesType;
 import selfit.selfit.domain.user.entity.User;
-import selfit.selfit.domain.wardrobe.entity.Wardrobe;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -27,7 +24,7 @@ public class Clothes {
     private Date update_date;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "type", nullable = false)
+    @Column(name = "type", nullable = false)
     private ClothesType type;
 
     @Column(name = "path", nullable = false)
@@ -38,7 +35,8 @@ public class Clothes {
     private User user;
 
     @Builder
-    public Clothes(String path, ClothesType type) {
+    public Clothes(User user, String path, ClothesType type) {
+        this.user = user;
         this.path = path;
         this.type = type;
         this.create_date = new Date();

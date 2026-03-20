@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import selfit.selfit.domain.clothes.dto.ClothesDto;
+import selfit.selfit.domain.fitted.dto.FittedImageDto;
 import selfit.selfit.domain.fitted.service.FittedImageService;
 import selfit.selfit.global.security.springsecurity.CustomUserDetails;
 
@@ -32,6 +34,7 @@ public class FittedImageController {
                                                  @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
         Long userId = userDetails.getId();
         String result = fittedImageService.fitting3D(userId, clothPath);
+
         return ResponseEntity.ok(result);
     }
 

@@ -69,53 +69,25 @@ public class SecurityConfig{
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
                 .authorizeHttpRequests(auth -> auth
-                        // 인증, 인가 필요한 url 지정
-                        // 카카오 로그인 시작 URI
-                        .requestMatchers("/oauth2/authorization/kakao").permitAll()
-                        // 카카오 콜백 URI
-                        .requestMatchers("/oauth2/login/kakao").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll() // 회원가입, 로그인은 인증 없이 가능
-                        .anyRequest().authenticated()   // 그외의 모든 url은 인증 필요
+                        // ✅ Swagger 허용 경로 추가
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/configuration/**",
+                                "/webjars/**"
+                        ).permitAll()
+
+                        // 기존 허용 경로 유지
+                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/clothes/delete").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/wardrobe/delete").permitAll()
+                        .requestMatchers("/proxy/**").permitAll()
+                        // 그 외는 인증 필요
+                        .anyRequest().authenticated()
                 )
-                .sessionManagement(sm->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // OAuth2
-                .oauth2Login(oauth2 -> oauth2
-                        .authorizationEndpoint(ae -> ae
-                                .baseUri("/oauth2/authorization/{registrationId}")
-                        )
-                        .redirectionEndpoint(re -> re
-                                .baseUri("/oauth2/login/*")
-                        )
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService)
-                        )
-                        .successHandler(oAuth2LoginSuccessHandler)
-                        .failureHandler(oAuth2LoginFailureHandler)
-                )
-                // jwt 필터
-                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider),
-                        UsernamePasswordAuthenticationFilter.class);
-//                .formLogin(form -> form
-//                        // form login 방식 적용
-//                        .usernameParameter("accountId")   // 로그인할 때 사용되는 id를 적어줌(여기서는 accounId로 로그인 하기 때문에 따로 적어줌. userName으로 로그인 한다면 적어주지 않아도 됨)
-//                        .passwordParameter("password")  // 로그인할 때 사용되는 password를 적어줌
-//                        .loginPage("/api/auth/login") // (optional) 로그인 GET 페이지 url
-//                        .loginProcessingUrl("/api/auth/login") // post시 이 URL을 가로챔
-//                        .successHandler((req, res, auth) -> {
-//                            // 성공 시 200 OK, 토큰·사용자 정보를 직접 body에 쓰려면 ApiController로 위임해도 됩니다.
-//                            res.setStatus(HttpServletResponse.SC_OK);
-//                        })
-//                        .failureHandler((req, res, ex) -> {
-//                            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
-//                        })
-//                        .permitAll()
-//                ) jwt 사용하므로 제외
-//                .logout(logout -> logout
-//                        // 로그아웃에 대한 정보
-//                        .logoutUrl("/api/auth/logout") // logout 시 나올 페이지
-//                        .invalidateHttpSession(true)
-//                        .deleteCookies("JSESSIONID")
-//                )
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -125,7 +97,10 @@ public class SecurityConfig{
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         // 허용할 프론트엔드 주소
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(List.of(
+                "http://localhost:3000",   // 실제 프론트
+                "http://localhost:8080"    // Swagger UI
+        ));
         // 허용할 HTTP 메서드
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         // 허용할 헤더

@@ -2,13 +2,13 @@ package selfit.selfit.domain.wardrobe.service.Impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import selfit.selfit.domain.clothes.dto.ClothesType;
+<<<<<<< HEAD
 import selfit.selfit.domain.clothes.repository.ClothesRepository;
+=======
+>>>>>>> main
 import selfit.selfit.domain.image.ImageFileStorageService;
 import selfit.selfit.domain.user.entity.User;
 import selfit.selfit.domain.user.repository.UserRepository;
@@ -17,8 +17,6 @@ import selfit.selfit.domain.wardrobe.entity.Wardrobe;
 import selfit.selfit.domain.wardrobe.repository.WardrobeRepository;
 import selfit.selfit.domain.wardrobe.service.WardrobeService;
 
-import java.net.MalformedURLException;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -71,6 +69,8 @@ public class WardrobeServiceImpl implements WardrobeService {
     /**
      * 소장 의류 경로 제공
      */
+
+
     @Override
     public List<WardrobeDto> getClothes(Long userId) {
         Optional<User> user = userRepository.findById(userId);

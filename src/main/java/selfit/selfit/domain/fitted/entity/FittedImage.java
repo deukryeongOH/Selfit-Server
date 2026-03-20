@@ -19,6 +19,8 @@ public class FittedImage {
     @Column(name = "fitted_url", columnDefinition = "TEXT")
     private String fitted_url;
 
+    private String fitted_url_2d;
+
     private Date createDate;
     private Date updateDate;
 
@@ -27,8 +29,9 @@ public class FittedImage {
     private User user;
 
     @Builder
-    public FittedImage(String fitted_url, User user) {
+    public FittedImage(String fitted_url, String fitted_url_2d, User user) {
         this.fitted_url = fitted_url;
+        this.fitted_url_2d = fitted_url_2d;
         this.user = user;
         this.createDate = new Date();
         this.updateDate = new Date();

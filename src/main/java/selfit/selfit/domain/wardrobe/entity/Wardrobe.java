@@ -3,12 +3,9 @@ package selfit.selfit.domain.wardrobe.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import selfit.selfit.domain.clothes.dto.ClothesType;
-import selfit.selfit.domain.clothes.entity.Clothes;
 import selfit.selfit.domain.user.entity.User;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity

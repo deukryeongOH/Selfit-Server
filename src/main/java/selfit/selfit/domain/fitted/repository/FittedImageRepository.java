@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface FittedImageRepository extends JpaRepository<FittedImage, Integer> {
     List<FittedImage> findAllByUserOrderByUpdateDateDesc(User user);
-
 }

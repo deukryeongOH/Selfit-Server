@@ -2,7 +2,6 @@ package selfit.selfit.domain.body.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -68,7 +67,7 @@ public class BodyController {
 
     @Operation(summary = "유저 신체 정보 사진기반 분석", description = "신체 사이즈를 업데이트 합니다. male, female",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "성공적으로 분석"),
+                    @ApiResponse(responseCode = "200", description = "성공적으로 변경"),
                     @ApiResponse(responseCode = "400", description = "잘못된 입력 값"),
                     @ApiResponse(responseCode = "500", description = "서버 오류 발생")
             })
@@ -83,10 +82,10 @@ public class BodyController {
 
     @Operation(summary = "유저 신체 3D get", description = "유저 신체 3d를 얻습니다. url 형태 반환, 사진 등록 선 필수",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "성공적으로 반환"),
-                    @ApiResponse(responseCode = "400", description = "잘못된 입력 값"),
+            @ApiResponse(responseCode = "200", description = "성공적으로 반환"),
+            @ApiResponse(responseCode = "400", description = "잘못된 입력 값"),
                     @ApiResponse(responseCode = "500", description = "서버 오류 발생")
-            })
+    })
     @PostMapping("/3d")
     public ApiResult<String> saveSize(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         Long userId = customUserDetails.getId();

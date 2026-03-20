@@ -30,13 +30,13 @@ public class Body {
     private String pelvis;
     private String chest;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "full_body_photos",
             joinColumns = @JoinColumn(name = "body_id"))
     @Column(name = "full_body_path", nullable = false)
     private List<String> fullBodyPhotos = new ArrayList<>();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "face_photos",
             joinColumns = @JoinColumn(name = "body_id"))
     @Column(name = "face_path", nullable = false)
@@ -49,8 +49,15 @@ public class Body {
     private Date update_date;
 
     @Builder
-    public Body(User user) {
+    public Body(User user, String height, String weight, String waist, String leg, String shoulder, String pelvis, String chest) {
         this.user       = user;
+        this.height       = height;
+        this.weight       = weight;
+        this.waist        = waist;
+        this.leg        = leg;
+        this.shoulder    = shoulder;
+        this.pelvis     = pelvis;
+        this.chest      = chest;
         this.create_date = new Date();
         this.update_date = new Date();
     }

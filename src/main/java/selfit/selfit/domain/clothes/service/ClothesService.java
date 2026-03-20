@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 public interface ClothesService {
     String saveClothes(Long userId, ClothesType type, MultipartFile file);
-    List<String> deleteClothes(Long userId, int index);
-    Resource provideClothes(Long userId, int index) throws MalformedURLException;
-//    Resource provideClothes(String filePath);
+    void deleteClothes(String imageURL);
+    List<ClothesDto> provideClothes(Long userId);
 }
