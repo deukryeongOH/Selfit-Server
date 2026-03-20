@@ -59,7 +59,7 @@ public class ClothesServiceImpl implements ClothesService {
         Clothes clothes = clothesRepository.findByPath(path)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이미지 경로입니다: " + path));
         clothesRepository.delete(clothes);
-        imageFileStorageService.deleteS3File(path);
+        imageFileStorageService.delete(path);
     }
 
     /**
