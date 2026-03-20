@@ -10,6 +10,7 @@ import selfit.selfit.domain.fitted.entity.FittedImage;
 @Setter
 @NoArgsConstructor
 public class FittedImageDto {
+
     private String fitted_3D_url;
     private String fitted_2D_url;
 
@@ -25,4 +26,5 @@ public class FittedImageDto {
                 .fitted_3D_url(null)
                 .build();
     }
+
 }

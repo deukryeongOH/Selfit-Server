@@ -33,8 +33,8 @@ public class WardrobeController {
     )
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResult<String> registerClothesFromWardrobe(@RequestParam("type") ClothesType type,
-                                                               @RequestParam("file") MultipartFile file,
-                                                              @AuthenticationPrincipal CustomUserDetails customUserDetails){
+                                                         @RequestParam("file") MultipartFile file,
+                                                         @AuthenticationPrincipal CustomUserDetails customUserDetails){
         Long userId = customUserDetails.getId();
         String path = wardrobeService.saveClothes(userId, type, file);
         return ApiResult.ok("담은 옷 등록", path);

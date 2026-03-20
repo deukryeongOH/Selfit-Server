@@ -5,6 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import selfit.selfit.domain.clothes.dto.ClothesType;
+<<<<<<< HEAD
+import selfit.selfit.domain.clothes.repository.ClothesRepository;
+=======
+>>>>>>> main
 import selfit.selfit.domain.image.ImageFileStorageService;
 import selfit.selfit.domain.user.entity.User;
 import selfit.selfit.domain.user.repository.UserRepository;
@@ -22,8 +26,8 @@ import java.util.stream.Collectors;
 public class WardrobeServiceImpl implements WardrobeService {
 
     private final WardrobeRepository wardrobeRepository;
-    private final ImageFileStorageService imageFileStorageService;
     private final UserRepository userRepository;
+    private final ImageFileStorageService imageFileStorageService;
 
     /**
      * 소장 의류 등록
@@ -57,9 +61,15 @@ public class WardrobeServiceImpl implements WardrobeService {
         Wardrobe wardrobe = wardrobeRepository.findByPath(imageURL)
                 .orElseThrow(() -> new IllegalArgumentException("의류가 존재하지 않습니다."));
 
-        imageFileStorageService.deleteS3File(imageURL);
+        imageFileStorageService.delete(imageURL);
         wardrobeRepository.delete(wardrobe);
+
     }
+
+    /**
+     * 소장 의류 경로 제공
+     */
+
 
     @Override
     public List<WardrobeDto> getClothes(Long userId) {
@@ -84,5 +94,6 @@ public class WardrobeServiceImpl implements WardrobeService {
 
         return dtoList;
     }
+
 
 }

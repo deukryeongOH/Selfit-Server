@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public interface BodyService {
-    Body saveSize(Long userId, BodySizeDto bodySizeDto);
+    void saveSize(Long userId, BodySizeDto bodySizeDto);
     List<String> uploadFullBody(User user, List<MultipartFile> files);
     BodySizeDto saveSizePhoto(Long userId, String gender);
     List<String> uploadFace(User user, List<MultipartFile> files);

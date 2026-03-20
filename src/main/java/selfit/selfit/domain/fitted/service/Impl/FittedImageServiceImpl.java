@@ -15,6 +15,8 @@ import selfit.selfit.domain.image.ImageFileStorageService;
 import selfit.selfit.domain.user.entity.User;
 import selfit.selfit.domain.user.repository.UserRepository;
 
+import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,6 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class FittedImageServiceImpl implements FittedImageService {
-
     private final BodyRepository bodyRepository;
     private final UserRepository userRepository;
     private final FittedImageRepository fittedImageRepository;
@@ -35,7 +36,7 @@ public class FittedImageServiceImpl implements FittedImageService {
                 .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
     }
 
-    public FittedImageDto fitting3D (Long userId, String clothPath){
+    public String fitting3D (Long userId, String clothPath){
         User user = getUserByUserId(userId);
 
         Body body = bodyRepository.findByUser(user)
@@ -55,29 +56,25 @@ public class FittedImageServiceImpl implements FittedImageService {
 
         FittedImage fittedImage = FittedImage.builder()
                 .fitted_url(measurements.get("model_url").toString())
-                .fitted_url_2d(measurements.get("image_2d").toString())
                 .user(user)
                 .build();
 
         fittedImageRepository.save(fittedImage);
 
-        return FittedImageDto.builder()
-                .fitted_2D_url(measurements.get("image_2d").toString())
-                .fitted_3D_url(measurements.get("model_url").toString())
-                .build();
+        return measurements.get("model_url").toString();
     }
 
-    public List<FittedImageDto> fittingList(Long userId) {
+    public List<String> fittingList(Long userId) {
         User user = getUserByUserId(userId);
 
         List<FittedImage> list = fittedImageRepository.findAllByUserOrderByUpdateDateDesc(user);
 
-        return list.stream()
+        List<String> fittedUrlList = list.stream()
                 .limit(5)
-                .map(fittedImage -> FittedImageDto.builder()
-                        .fitted_2D_url(fittedImage.getFitted_url_2d())
-                        .fitted_3D_url(fittedImage.getFitted_url())
-                        .build())
+                .map(FittedImage::getFitted_url)
                 .toList();
+
+        return fittedUrlList;
     }
+
 }

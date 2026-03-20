@@ -23,14 +23,14 @@ public class BodyController {
     private final BodyService bodyService;
 
     @Operation(summary = "전신 사진 저장", description = "앞, 옆(왼쪽, 오른쪽), 뒷모습 사진들을 업로드해 저장합니다.",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "성공적으로 저장"),
-            @ApiResponse(responseCode = "400", description = "잘못된 입력 값"),
-            @ApiResponse(responseCode = "500", description = "서버 오류 발생")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "성공적으로 저장"),
+                    @ApiResponse(responseCode = "400", description = "잘못된 입력 값"),
+                    @ApiResponse(responseCode = "500", description = "서버 오류 발생")
+            })
     @PostMapping("/shape")
     public ApiResult<List<String>> uploadFullBody(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                           @RequestParam("files") List<MultipartFile> files) throws IOException {
+                                                  @RequestParam("files") List<MultipartFile> files) throws IOException {
         User user = customUserDetails.getUser();
 
         List<String> paths = bodyService.uploadFullBody(user, files);
@@ -38,14 +38,14 @@ public class BodyController {
     }
 
     @Operation(summary = "얼굴 사진 저장", description = "얼굴 사진을 업로드해 저장합니다.",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "성공적으로 저장"),
-            @ApiResponse(responseCode = "400", description = "잘못된 입력 값"),
-            @ApiResponse(responseCode = "500", description = "서버 오류 발생")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "성공적으로 저장"),
+                    @ApiResponse(responseCode = "400", description = "잘못된 입력 값"),
+                    @ApiResponse(responseCode = "500", description = "서버 오류 발생")
+            })
     @PostMapping("/face")
     public ApiResult<List<String>> uploadFace(@RequestParam("file") List<MultipartFile> files,
-                           @AuthenticationPrincipal CustomUserDetails customUserDetails) throws IOException {
+                                              @AuthenticationPrincipal CustomUserDetails customUserDetails) throws IOException {
         User user = customUserDetails.getUser();
         List<String> paths = bodyService.uploadFace(user, files);
         return ApiResult.ok("얼굴 사진 업로드 성공", paths);
@@ -53,13 +53,13 @@ public class BodyController {
 
     @Operation(summary = "유저 신체 정보 등록", description = "신체 사이즈를 업데이트 합니다.",
             responses = {
-            @ApiResponse(responseCode = "200", description = "성공적으로 변경"),
-            @ApiResponse(responseCode = "400", description = "잘못된 입력 값"),
-            @ApiResponse(responseCode = "500", description = "서버 오류 발생")
-    })
+                    @ApiResponse(responseCode = "200", description = "성공적으로 변경"),
+                    @ApiResponse(responseCode = "400", description = "잘못된 입력 값"),
+                    @ApiResponse(responseCode = "500", description = "서버 오류 발생")
+            })
     @PostMapping("/size")
     public ApiResult<BodySizeDto> saveSize(@RequestBody BodySizeDto bodySizeDto,
-                                               @AuthenticationPrincipal CustomUserDetails customUserDetails){
+                                           @AuthenticationPrincipal CustomUserDetails customUserDetails){
         Long userId = customUserDetails.getId();
         bodyService.saveSize(userId, bodySizeDto);
         return ApiResult.ok("신체 정보 등록 완료", bodySizeDto);
@@ -73,7 +73,7 @@ public class BodyController {
             })
     @PostMapping("/size/photo")
     public ApiResult<BodySizeDto> saveSize(@RequestParam String gender,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails){
+                                           @AuthenticationPrincipal CustomUserDetails customUserDetails){
         Long userId = customUserDetails.getId();
         BodySizeDto bodySizeDto = bodyService.saveSizePhoto(userId, gender);
 
@@ -82,10 +82,10 @@ public class BodyController {
 
     @Operation(summary = "유저 신체 3D get", description = "유저 신체 3d를 얻습니다. url 형태 반환, 사진 등록 선 필수",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "성공적으로 변경"),
-                    @ApiResponse(responseCode = "400", description = "잘못된 입력 값"),
+            @ApiResponse(responseCode = "200", description = "성공적으로 반환"),
+            @ApiResponse(responseCode = "400", description = "잘못된 입력 값"),
                     @ApiResponse(responseCode = "500", description = "서버 오류 발생")
-            })
+    })
     @PostMapping("/3d")
     public ApiResult<String> saveSize(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         Long userId = customUserDetails.getId();

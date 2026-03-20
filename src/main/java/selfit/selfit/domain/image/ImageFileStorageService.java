@@ -1,7 +1,13 @@
 package selfit.selfit.domain.image;
 
+<<<<<<< HEAD
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+=======
+>>>>>>> main
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -15,6 +21,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class ImageFileStorageService {
 
     private final S3Client s3Client;

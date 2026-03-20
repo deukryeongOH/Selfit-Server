@@ -14,13 +14,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-                .allowedOrigins(frontendUrl, "http://localhost:8080") // Swagger UI 요청도 허용
+        registry.addMapping("/api/**")               // API 전용 경로
+                .allowedOrigins(frontendUrl, "http://localhost:8080")  // 프론트 URL & Swagger UI
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
     }
-
 
 }

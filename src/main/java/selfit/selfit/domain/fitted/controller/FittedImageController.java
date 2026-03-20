@@ -30,10 +30,11 @@ public class FittedImageController {
                     @ApiResponse(responseCode = "500", description = "서버 오류 발생")
             })
     @GetMapping("")
-    public ResponseEntity<FittedImageDto> provideClothes(@RequestParam String clothPath,
-                                                         @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
+    public ResponseEntity<String> provideClothes(@RequestParam String clothPath,
+                                                 @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
         Long userId = userDetails.getId();
-        FittedImageDto result = fittedImageService.fitting3D(userId, clothPath);
+        String result = fittedImageService.fitting3D(userId, clothPath);
+
         return ResponseEntity.ok(result);
     }
 
@@ -44,9 +45,9 @@ public class FittedImageController {
                     @ApiResponse(responseCode = "500", description = "서버 오류 발생")
             })
     @GetMapping("/list")
-    public ResponseEntity<List<FittedImageDto>> provideClothesList(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
+    public ResponseEntity<List<String>> provideClothesList(@AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
         Long userId = userDetails.getId();
-        List<FittedImageDto> result = fittedImageService.fittingList(userId);
+        List<String> result = fittedImageService.fittingList(userId);
         return ResponseEntity.ok(result);
     }
 }
