@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import selfit.selfit.domain.clothes.dto.ClothesType;
-<<<<<<< HEAD
 import selfit.selfit.domain.clothes.repository.ClothesRepository;
-=======
->>>>>>> main
+
 import selfit.selfit.domain.image.ImageFileStorageService;
 import selfit.selfit.domain.user.entity.User;
 import selfit.selfit.domain.user.repository.UserRepository;
